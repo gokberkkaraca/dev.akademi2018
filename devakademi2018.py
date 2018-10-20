@@ -1,4 +1,6 @@
 import json
+import matplotlib.pylab as pylab
+import matplotlib.pyplot as plt
 from datetime import datetime
 
 # open the file that contains the data
@@ -91,3 +93,13 @@ for gender in genders:
         genders[gender]["CLICK"] = [x + y for x, y in zip(genders[gender]["CLICK"], user["CLICK"])]
     genders[gender]["RATIO"] = [x / y if y != 0 else 0 for x, y in zip(genders[gender]["CLICK"], genders[gender]["IMPRESSION"])]
 
+plt.figure(figsize=(19.2, 10.8), dpi=100)
+for job in jobs:
+    plt.title("Job - Click Time Graph")
+    plt.ylabel("Click/Impression Rate")
+    plt.xlabel("time")
+    plt.plot(["00-03", "03-06", "06-09", "09-12", "12-15", "15-18", "18-21", "21-24"], jobs[job]["RATIO"], label=job)
+plt.ylim(top=0.025)
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+pylab.savefig("./plots/" + "jobs" + ".png", bbox_inches="tight")
+plt.clf()
