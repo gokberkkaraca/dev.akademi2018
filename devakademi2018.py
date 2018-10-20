@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 # open the file that contains the data
-with open("./all_data.json", encoding='utf-8') as file:
+with open("data/all_data.json", encoding='utf-8') as file:
     all_data = json.loads(file.read())
 
-with open("./user_data.json", encoding='utf-8') as file:
+with open("data/user_data.json", encoding='utf-8') as file:
     users = json.loads(file.read())
 
 for user in users:
