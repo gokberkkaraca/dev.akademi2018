@@ -68,6 +68,8 @@ genders = {gender:stats_dictionary for gender in genders if gender != ''}
 click_ratios = {
     "jobs": {},
     "cities": {},
+    "education_levels": {},
+    "martial_statuses": {}
 }
 
 for job in jobs:
@@ -89,6 +91,26 @@ for city in cities:
         city_click = [x + y for x, y in zip(user["CLICK"], city_click)]
     click_ratios["cities"][city] = [x / y if y != 0 else 0 for x, y in zip(city_click, city_impression)]
 
+for education_level in education_levels:
+    user_group = [user for user in users.values() if user["education"] == education_level]
+    print(education_level, len(user_group))
+    education_level_impression = [0,0,0,0,0,0,0,0]
+    education_level_click = [0,0,0,0,0,0,0,0]
+    for user in user_group:
+        education_level_impression = [x + y for x, y in zip(user["IMPRESSION"], education_level_impression)]
+        education_level_click = [x + y for x, y in zip(user["CLICK"], education_level_click)]
+    click_ratios["education_levels"][education_level] = [x / y if y != 0 else 0 for x, y in zip(education_level_click, education_level_impression)]
+
+for martial_status in martial_statuses:
+    user_group = [user for user in users.values() if user["martialStatus"] == martial_status]
+    print(martial_status, len(user_group))
+    martial_status_impression = [0,0,0,0,0,0,0,0]
+    martial_status_click = [0,0,0,0,0,0,0,0]
+    for user in user_group:
+        martial_status_impression = [x + y for x, y in zip(user["IMPRESSION"], martial_status_impression)]
+        martial_status_click = [x + y for x, y in zip(user["CLICK"], martial_status_click)]
+    click_ratios["martial_statuses"][martial_status] = [x / y if y != 0 else 0 for x, y in zip(martial_status_click, martial_status_impression)]
+
 plt.figure(figsize=(19.2, 10.8), dpi=100)
 for job in jobs:
     plt.title("Job - Click Time Graph")
@@ -107,4 +129,24 @@ for city in cities:
     plt.plot(["00-03", "03-06", "06-09", "09-12", "12-15", "15-18", "18-21", "21-24"], click_ratios["cities"][city], label=city)
 plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 pylab.savefig("./plots/" + "cities" + ".png", bbox_inches="tight")
+plt.clf()
+
+plt.figure(figsize=(19.2, 10.8), dpi=100)
+for martial_status in martial_statuses:
+    plt.title("Mrtial Statuses - Click Time Graph")
+    plt.ylabel("Click/Impression Rate")
+    plt.xlabel("Time")
+    plt.plot(["00-03", "03-06", "06-09", "09-12", "12-15", "15-18", "18-21", "21-24"], click_ratios["martial_statuses"][martial_status], label=martial_status)
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+pylab.savefig("./plots/" + "martial_statuses" + ".png", bbox_inches="tight")
+plt.clf()
+
+plt.figure(figsize=(19.2, 10.8), dpi=100)
+for education_level in education_levels:
+    plt.title("Education Level - Click Time Graph")
+    plt.ylabel("Click/Impression Rate")
+    plt.xlabel("Time")
+    plt.plot(["00-03", "03-06", "06-09", "09-12", "12-15", "15-18", "18-21", "21-24"], click_ratios["education_levels"][education_level], label=education_level)
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+pylab.savefig("./plots/" + "education_levels" + ".png", bbox_inches="tight")
 plt.clf()
