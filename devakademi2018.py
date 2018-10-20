@@ -84,7 +84,6 @@ for job in jobs:
 
 for city in cities:
     user_group = [user for user in users.values() if user["cityName"] == city]
-    print(city, len(user_group))
     city_impression = [0,0,0,0,0,0,0,0]
     city_click = [0,0,0,0,0,0,0,0]
     for user in user_group:
@@ -94,7 +93,6 @@ for city in cities:
 
 for education_level in education_levels:
     user_group = [user for user in users.values() if user["education"] == education_level]
-    print(education_level, len(user_group))
     education_level_impression = [0,0,0,0,0,0,0,0]
     education_level_click = [0,0,0,0,0,0,0,0]
     for user in user_group:
@@ -104,7 +102,6 @@ for education_level in education_levels:
 
 for martial_status in martial_statuses:
     user_group = [user for user in users.values() if user["martialStatus"] == martial_status]
-    print(martial_status, len(user_group))
     martial_status_impression = [0,0,0,0,0,0,0,0]
     martial_status_click = [0,0,0,0,0,0,0,0]
     for user in user_group:
