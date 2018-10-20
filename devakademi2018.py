@@ -65,11 +65,11 @@ martial_statuses = {martial_status:stats_dictionary for martial_status in martia
 genders = set([user["gender"] for uid,user in users.items()])
 genders = {gender:stats_dictionary for gender in genders if gender != ''}
 
-print(jobs)
-
 click_ratios = {
-    "jobs": {}
+    "jobs": {},
+    "cities": {},
 }
+
 for job in jobs:
     user_group = [user for user in users.values() if user["job"] == job]
     job_impression = [0,0,0,0,0,0,0,0]
@@ -79,12 +79,32 @@ for job in jobs:
         job_click = [x + y for x, y in zip(user["CLICK"], job_click)]
     click_ratios["jobs"][job] = [x / y if y != 0 else 0 for x, y in zip(job_click, job_impression)]
 
+for city in cities:
+    user_group = [user for user in users.values() if user["cityName"] == city]
+    print(city, len(user_group))
+    city_impression = [0,0,0,0,0,0,0,0]
+    city_click = [0,0,0,0,0,0,0,0]
+    for user in user_group:
+        city_impression = [x + y for x, y in zip(user["IMPRESSION"], city_impression)]
+        city_click = [x + y for x, y in zip(user["CLICK"], city_click)]
+    click_ratios["cities"][city] = [x / y if y != 0 else 0 for x, y in zip(city_click, city_impression)]
+
 plt.figure(figsize=(19.2, 10.8), dpi=100)
 for job in jobs:
     plt.title("Job - Click Time Graph")
     plt.ylabel("Click/Impression Rate")
-    plt.xlabel("time")
+    plt.xlabel("Time")
     plt.plot(["00-03", "03-06", "06-09", "09-12", "12-15", "15-18", "18-21", "21-24"], click_ratios["jobs"][job], label=job)
 plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 pylab.savefig("./plots/" + "jobs" + ".png", bbox_inches="tight")
+plt.clf()
+
+plt.figure(figsize=(19.2, 10.8), dpi=100)
+for city in cities:
+    plt.title("City - Click Time Graph")
+    plt.ylabel("Click/Impression Rate")
+    plt.xlabel("Time")
+    plt.plot(["00-03", "03-06", "06-09", "09-12", "12-15", "15-18", "18-21", "21-24"], click_ratios["cities"][city], label=city)
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+pylab.savefig("./plots/" + "cities" + ".png", bbox_inches="tight")
 plt.clf()
