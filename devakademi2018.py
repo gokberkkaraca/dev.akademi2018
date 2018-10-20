@@ -69,7 +69,8 @@ click_ratios = {
     "jobs": {},
     "cities": {},
     "education_levels": {},
-    "martial_statuses": {}
+    "martial_statuses": {},
+    "genders": {}
 }
 
 for job in jobs:
@@ -111,6 +112,15 @@ for martial_status in martial_statuses:
         martial_status_click = [x + y for x, y in zip(user["CLICK"], martial_status_click)]
     click_ratios["martial_statuses"][martial_status] = [x / y if y != 0 else 0 for x, y in zip(martial_status_click, martial_status_impression)]
 
+for gender in genders:
+    user_group = [user for user in users.values() if user["gender"] == gender]
+    gender_impression = [0,0,0,0,0,0,0,0]
+    gender_click = [0,0,0,0,0,0,0,0]
+    for user in user_group:
+        gender_impression = [x + y for x, y in zip(user["IMPRESSION"], gender_impression)]
+        gender_click = [x + y for x, y in zip(user["CLICK"], gender_click)]
+    click_ratios["genders"][gender] = [x / y if y != 0 else 0 for x, y in zip(gender_click, gender_impression)]
+
 plt.figure(figsize=(19.2, 10.8), dpi=100)
 for job in jobs:
     plt.title("Job - Click Time Graph")
@@ -149,4 +159,14 @@ for education_level in education_levels:
     plt.plot(["00-03", "03-06", "06-09", "09-12", "12-15", "15-18", "18-21", "21-24"], click_ratios["education_levels"][education_level], label=education_level)
 plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 pylab.savefig("./plots/" + "education_levels" + ".png", bbox_inches="tight")
+plt.clf()
+
+plt.figure(figsize=(19.2, 10.8), dpi=100)
+for gender in genders:
+    plt.title("gender - Click Time Graph")
+    plt.ylabel("Click/Impression Rate")
+    plt.xlabel("Time")
+    plt.plot(["00-03", "03-06", "06-09", "09-12", "12-15", "15-18", "18-21", "21-24"], click_ratios["genders"][gender], label=gender)
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+pylab.savefig("./plots/" + "genders" + ".png", bbox_inches="tight")
 plt.clf()
